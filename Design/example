@@ -1,0 +1,111 @@
+
+/* block comment */
+
+using some.name;
+
+module blah  // or module blah.other
+{
+    type x : int ;
+    pub var x = blah ;
+}
+
+foreach var x in xs 
+{
+    continue ;
+    break ;
+}
+
+while boolean-expr
+{
+}
+
+if boolean-expr
+{
+}
+else if boolean-expr
+{
+}
+else
+{
+}
+
+type name : someType ;  /* concrete-type, 'a -> 'a, 'a, ('a, 'b), array<'a>
+var name = expr ;
+const name = expr ; 
+func name( x, y : const , z : var ) // default to const (b/c everything is pass by value you don't have to worry about  the const-ness of the value
+{
+    return blah ;
+}
+
+type name : some-type -> seq<other-type> ;
+func name( x ) // wont need <'a> because the func will have a type declaration with this info
+{
+    yield return blah ;
+    yield break ;
+}
+
+struct name
+{
+    x : int ;
+}
+
+struct name<'a> // pub struct name<'a> 
+{
+    x : 'a ;    // pub x : 'a ;
+    y : 'a -> 'a;
+}
+
+( x, y, z ) -> { statements ; }
+( x, y ) -> expr 
+x -> expr
+x -> { statements ; }
+
+x = expr ; // assignment
+x.y = expr ; // assignment
+
+x = ( expr, expr, expr ) ; 
+x.Item1
+x.Item2
+x.Item3
+
+array[ int-expr ] = expr
+x = array[ int-expr ];
+array[ int-expr ].field 
+
+( expr )
+
+i/f-epxr * i/fexpr // (*, +, /, - )
+- i/f-expr
+
+true
+false
+and // binary
+or // binary
+! // uniary
+xor // binary
+
+"blah"
+
+100
+4.5
+-100
+-4.5
+-0.1E50
+0.1E-50
+
+enum name
+{
+    sym1,
+    sym2,
+}
+
+var x = { expr, expr } ; // array literal
+
+
+do ( bind, unit )
+{
+    x <- blah ;
+    otherBlah ;
+    unit x ;
+}
+
