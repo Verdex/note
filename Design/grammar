@@ -1,0 +1,37 @@
+
+digit := 0-9
+
+int := digit+
+    | - digit+
+
+float := [-]digit+.digit+[E|e[-]digit+]
+
+
+num-eq-expr := add-expr == add-expr
+            | add-expr != add-expr
+
+add-expr := mult-expr + mult-expr
+         | mult-expr - mult-expr
+
+mult-expr := neg-expr * neg-expr
+          | neg-expr / neg-expr
+
+neg-expr := [-] expr
+
+bool := true | false
+
+bool-eq-expr := or-expr == or-expr
+             | or-expr != or-expr
+or-expr := xor-expr or xor-expr
+xor-expr := and-expr xor and-expr
+and-expr := not-expr and not-expr
+not-expr := [!] expr
+
+expr := ( expr )
+     | num-eq-expr
+     | neg-expr
+     | add-expr
+     | mult-expr
+     | int
+     | float
+     | bool
