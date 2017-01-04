@@ -1,1 +1,4 @@
 
+namespace Note.Lex
+{
+}
