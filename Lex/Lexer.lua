@@ -11,13 +11,13 @@ function lex( input, tokMaps )
         local success = false
         for _, map in ipairs( tokMaps ) do 
             local pattern = "^" ..  map.pattern .. "()"
-            local x = { string.match( input, pattern, start ) }
+            local result = { string.match( input, pattern, start ) }
 
-            if x[1] then 
-                t[#t+1] = map.trans( x )  
-                --coroutine.yield( map.trans( x ) )
+            if result[1] then 
+                t[#t+1] = map.trans( result )  
+                --coroutine.yield( map.trans( result ) )
 
-                start = x[#x]
+                start = result[#result]
 
                 success = true
                 break
