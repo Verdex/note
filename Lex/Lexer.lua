@@ -6,7 +6,6 @@ function lex( input, tokMaps )
 
     local t = {}
 
-    -- todo handle the case where no pattern works
     while start <= #input do
 
         local success = false
