@@ -22,7 +22,7 @@ while boolean-expr
 if boolean-expr
 {
 }
-elseif boolean-expr
+else if boolean-expr
 {
 }
 else
