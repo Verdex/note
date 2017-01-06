@@ -15,6 +15,7 @@ function lex( input, tokMaps )
 
             if result[1] then 
                 t[#t+1] = map.trans( result )  
+                -- TODO
                 --coroutine.yield( map.trans( result ) )
 
                 start = result[#result]
@@ -24,6 +25,7 @@ function lex( input, tokMaps )
             end
         end
         if not success then
+            -- TODO need to handle failure by reporting index number
             assert( false, "failure" )
         end
 

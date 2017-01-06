@@ -1,5 +1,5 @@
 
-/ block comment */
+/* block comment */
 
 using some.name;
 
@@ -22,7 +22,7 @@ while boolean-expr
 if boolean-expr
 {
 }
-else if boolean-expr
+elseif boolean-expr
 {
 }
 else
@@ -81,7 +81,7 @@ true
 false
 and // binary
 or // binary
-! // uniary
+not // uniary
 xor // binary
 
 "blah"
