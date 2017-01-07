@@ -75,6 +75,56 @@ tokenMaps =
         end
     },
 
+    {
+        pattern = "%.";
+        trans = function () return { type = tokenType.dot } end
+    },
+
+    {
+        pattern = ":";
+        trans = function () return { type = tokenType.colon } end
+    },
+
+    {
+        pattern = ";";
+        trans = function () return { type = tokenType.semicolon } end
+    },
+
+    {
+        pattern = "=";
+        trans = function () return { type = tokenType.assign } end
+    },
+
+    {
+        pattern = "==";
+        trans = function () return { type = tokenType.equal } end
+    },
+
+    {
+        pattern = "!=";
+        trans = function () return { type = tokenType.notEqual } end
+    },
+
+    {
+        pattern = "%*";
+        trans = function () return { type = tokenType.mult } end
+    },
+
+    {
+        pattern = "%+";
+        trans = function () return { type = tokenType.add } end
+    },
+
+    {
+        pattern = "%-";
+        trans = function () return { type = tokenType.sub } end
+    },
+
+    {
+        pattern = "[[/]]";
+        trans = function () return { type = tokenType.div } end
+    },
+
     -- keywords
     {
         pattern = "true";
