@@ -61,124 +61,6 @@ tokenType =
 
 tokenMaps = 
 {
-    { 
-        pattern = [[%"(.*)%"]];
-        trans = function ( s ) return { type = tokenType.string; value = s[1] } end
-    },
-
-    { 
-        pattern = "%s";
-        trans = function () return { type = tokenType.ignore } end
-    },
-
-    { 
-        pattern = "(%d+)";
-        trans = function ( d ) 
-            return { type = tokenType.int ; value = tonumber( d[1] ) } 
-        end
-    },
-
-    {
-        pattern = "%.";
-        trans = function () return { type = tokenType.dot } end
-    },
-
-    {
-        pattern = ",";
-        trans = function () return { type = tokenType.comma } end
-    },
-
-    {
-        pattern = ":";
-        trans = function () return { type = tokenType.colon } end
-    },
-
-    {
-        pattern = ";";
-        trans = function () return { type = tokenType.semicolon } end
-    },
-
-    {
-        pattern = "=";
-        trans = function () return { type = tokenType.assign } end
-    },
-
-    {
-        pattern = "==";
-        trans = function () return { type = tokenType.equal } end
-    },
-
-    {
-        pattern = "!=";
-        trans = function () return { type = tokenType.notEqual } end
-    },
-
-    {
-        pattern = "%*";
-        trans = function () return { type = tokenType.mult } end
-    },
-
-    {
-        pattern = "%+";
-        trans = function () return { type = tokenType.add } end
-    },
-
-    {
-        pattern = "%-";
-        trans = function () return { type = tokenType.sub } end
-    },
-
-    {
-        pattern = "[[/]]";
-        trans = function () return { type = tokenType.div } end
-    },
-
-    {
-        pattern = "<";
-        trans = function () return { type = tokenType.openAngle } end
-    },
-
-    {
-        pattern = ">";
-        trans = function () return { type = tokenType.closeAngle } end
-    },
-
-    {
-        pattern = "[";
-        trans = function () return { type = tokenType.openSquare } end
-    },
-
-    {
-        pattern = "]";
-        trans = function () return { type = tokenType.closeSqure } end
-    },
-
-    {
-        pattern = "{";
-        trans = function () return { type = tokenType.openCurly } end
-    },
-
-    {
-        pattern = "}";
-        trans = function () return { type = tokenType.closeCurly } end
-    },
-
-    {
-        pattern = "%(";
-        trans = function () return { type = tokenType.openParen } end
-    },
-
-    {
-        pattern = "%)";
-        trans = function () return { type = tokenType.closeParen } end
-    },
-
-    {
-        pattern = "([_%a][_%w']*)";
-        trans = function ( s ) return { type = tokenType.symbol; value = s[1] } end
-    },
-
-
     -- keywords
     {
         pattern = "true";
@@ -319,6 +201,148 @@ tokenMaps =
         pattern = "foreach";
         trans = function () return { type = tokenType["foreach"] } end 
     },
+    -- keywords end
+
+    { 
+        pattern = [[%"(.*)%"]];
+        trans = function ( s ) return { type = tokenType.string; value = s[1] } end
+    },
+
+    { 
+        pattern = "%s";
+        trans = function () return { type = tokenType.ignore } end
+    },
+
+    { 
+        pattern = "(%d+).(%d+)";
+        trans = function ( f ) 
+            return { type = tokenType.float 
+                   ; exponent = false
+                   ; intValue = tonumber( f[1] ) 
+                   ; floatValue = tonumber( f[2] ) 
+                   } 
+        end
+    },
+
+    { 
+        pattern = "(%d+).(%d+)[Ee](-?%d+)";
+        trans = function ( f ) 
+            return { type = tokenType.float 
+                   ; exponent = tonumber( f[3] ) 
+                   ; intValue = tonumber( f[1] ) 
+                   ; floatValue = tonumber( f[2] ) 
+                   } 
+        end
+    },
+
+    { 
+        pattern = "(%d+)";
+        trans = function ( d ) 
+            return { type = tokenType.int ; value = tonumber( d[1] ) } 
+        end
+    },
+
+    {
+        pattern = "%.";
+        trans = function () return { type = tokenType.dot } end
+    },
+
+    {
+        pattern = ",";
+        trans = function () return { type = tokenType.comma } end
+    },
+
+    {
+        pattern = ":";
+        trans = function () return { type = tokenType.colon } end
+    },
+
+    {
+        pattern = ";";
+        trans = function () return { type = tokenType.semicolon } end
+    },
+
+    {
+        pattern = "=";
+        trans = function () return { type = tokenType.assign } end
+    },
+
+    {
+        pattern = "==";
+        trans = function () return { type = tokenType.equal } end
+    },
+
+    {
+        pattern = "!=";
+        trans = function () return { type = tokenType.notEqual } end
+    },
+
+    {
+        pattern = "%*";
+        trans = function () return { type = tokenType.mult } end
+    },
+
+    {
+        pattern = "%+";
+        trans = function () return { type = tokenType.add } end
+    },
+
+    {
+        pattern = "%-";
+        trans = function () return { type = tokenType.sub } end
+    },
+
+    {
+        pattern = "[[/]]";
+        trans = function () return { type = tokenType.div } end
+    },
+
+    {
+        pattern = "<";
+        trans = function () return { type = tokenType.openAngle } end
+    },
+
+    {
+        pattern = ">";
+        trans = function () return { type = tokenType.closeAngle } end
+    },
+
+    {
+        pattern = "[";
+        trans = function () return { type = tokenType.openSquare } end
+    },
+
+    {
+        pattern = "]";
+        trans = function () return { type = tokenType.closeSqure } end
+    },
+
+    {
+        pattern = "{";
+        trans = function () return { type = tokenType.openCurly } end
+    },
+
+    {
+        pattern = "}";
+        trans = function () return { type = tokenType.closeCurly } end
+    },
+
+    {
+        pattern = "%(";
+        trans = function () return { type = tokenType.openParen } end
+    },
+
+    {
+        pattern = "%)";
+        trans = function () return { type = tokenType.closeParen } end
+    },
+
+    {
+        pattern = "([_%a][_%w']*)";
+        trans = function ( s ) return { type = tokenType.symbol; value = s[1] } end
+    },
+
+
 }
 
 
