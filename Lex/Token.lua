@@ -1,6 +1,7 @@
 
 tokenType = 
-{ 
+{
+    -- TODO need comments
     ignore = "ignore";
     int = "int";
     float = "float";
@@ -24,9 +25,6 @@ tokenType =
     closeCurly = "closeCurly";
     openSquare = "openSquare";
     closeSquare = "closeSquare";
-    typeTick = "typeTick";
-    rightArrow = "rightArrow";
-    leftArrow = "leftArrow";
     comma = "comma";
 
 
@@ -64,8 +62,13 @@ tokenType =
 tokenMaps = 
 {
     { 
+        pattern = [[%"(.*)%"]];
+        trans = function ( s ) return { type = tokenType.string; value = s[1] } end
+    },
+
+    { 
         pattern = "%s";
-        trans = function () return { type =  tokenType.ignore } end
+        trans = function () return { type = tokenType.ignore } end
     },
 
     { 
@@ -78,6 +81,11 @@ tokenMaps =
     {
         pattern = "%.";
         trans = function () return { type = tokenType.dot } end
+    },
+
+    {
+        pattern = ",";
+        trans = function () return { type = tokenType.comma } end
     },
 
     {
@@ -124,6 +132,52 @@ tokenMaps =
         pattern = "[[/]]";
         trans = function () return { type = tokenType.div } end
     },
+
+    {
+        pattern = "<";
+        trans = function () return { type = tokenType.openAngle } end
+    },
+
+    {
+        pattern = ">";
+        trans = function () return { type = tokenType.closeAngle } end
+    },
+
+    {
+        pattern = "[";
+        trans = function () return { type = tokenType.openSquare } end
+    },
+
+    {
+        pattern = "]";
+        trans = function () return { type = tokenType.closeSqure } end
+    },
+
+    {
+        pattern = "{";
+        trans = function () return { type = tokenType.openCurly } end
+    },
+
+    {
+        pattern = "}";
+        trans = function () return { type = tokenType.closeCurly } end
+    },
+
+    {
+        pattern = "%(";
+        trans = function () return { type = tokenType.openParen } end
+    },
+
+    {
+        pattern = "%)";
+        trans = function () return { type = tokenType.closeParen } end
+    },
+
+    {
+        pattern = "([_%a][_%w']*)";
+        trans = function ( s ) return { type = tokenType.symbol; value = s[1] } end
+    },
+
 
     -- keywords
     {
@@ -266,3 +320,5 @@ tokenMaps =
         trans = function () return { type = tokenType["foreach"] } end 
     },
 }
+
+
