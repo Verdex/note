@@ -29,7 +29,7 @@ else
 {
 }
 
-type name : someType ;  /* concrete-type, 'a -> 'a, 'a, ('a, 'b), array<'a>
+type name : someType ;  /* concrete-type, 'a -> 'a, 'a, ('a, 'b), array<'a> */
 var name = expr ;
 const name = expr ; 
 func name( x, y : const , z : var ) // default to const (b/c everything is pass by value you don't have to worry about  the const-ness of the value
@@ -74,8 +74,10 @@ array[ int-expr ].field
 
 ( expr )
 
+/*
 i/f-epxr * i/fexpr // (*, +, /, -, ==, != )
 - i/f-expr
+*/ 
 
 true
 false

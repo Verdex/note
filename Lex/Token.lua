@@ -61,6 +61,26 @@ tokenType =
 
 tokenMaps = 
 {
+    { 
+        pattern = [[//.-%c]];
+        trans = function () return { type = tokenType.ignore } end
+    },
+
+    { 
+        pattern = [[/%*.-%*/]];
+        trans = function () return { type = tokenType.ignore } end
+    },
+
+    { 
+        pattern = [[%"(.*)%"]];
+        trans = function ( s ) return { type = tokenType.string; value = s[1] } end
+    },
+
+    { 
+        pattern = "%s";
+        trans = function () return { type = tokenType.ignore } end
+    },
+
     -- keywords
     {
         pattern = "true";
@@ -204,16 +224,6 @@ tokenMaps =
     -- keywords end
 
     { 
-        pattern = [[%"(.*)%"]];
-        trans = function ( s ) return { type = tokenType.string; value = s[1] } end
-    },
-
-    { 
-        pattern = "%s";
-        trans = function () return { type = tokenType.ignore } end
-    },
-
-    { 
         pattern = "(%d+).(%d+)";
         trans = function ( f ) 
             return { type = tokenType.float 
@@ -308,12 +318,12 @@ tokenMaps =
     },
 
     {
-        pattern = "[";
+        pattern = "%[";
         trans = function () return { type = tokenType.openSquare } end
     },
 
     {
-        pattern = "]";
+        pattern = "%]";
         trans = function () return { type = tokenType.closeSqure } end
     },
 
@@ -338,7 +348,7 @@ tokenMaps =
     },
 
     {
-        pattern = "([_%a][_%w']*)";
+        pattern = "([_%a'][_%w']*)";
         trans = function ( s ) return { type = tokenType.symbol; value = s[1] } end
     },
 

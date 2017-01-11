@@ -26,7 +26,7 @@ function lex( input, tokMaps )
         end
         if not success then
             -- TODO need to handle failure by reporting index number
-            assert( false, "failure" )
+            assert( false, "failure: " .. string.sub( input,  start - 20, start + 20 ) .. "\n" .. string.sub( input, start, start ))
         end
 
     end
