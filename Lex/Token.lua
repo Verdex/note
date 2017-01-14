@@ -1,7 +1,6 @@
 
 tokenType = 
 {
-    -- TODO need comments
     ignore = "ignore";
     int = "int";
     float = "float";
