@@ -7,12 +7,12 @@ match ( token )
                       then yield complete
 
 var_assign ( buffer )
-    buffer = yield c->ok( match( var ) )
+    buffer = yield c->ok( match( var, buffer[1] ) )
     ...
 
     yield complete
 
-and ( ... )
+or ( ... )
     parsers = { ... }
 
     for t in tokens do
@@ -33,3 +33,25 @@ and ( ... )
 
 
 --]]
+local complete = "complete"
+local ok = "ok"
+local fail = "fail"
+
+local function match( token, item )
+    if token.type == item.type and token.value == token.value then
+        return complete
+    else
+        return fail
+    end
+end
+
+function choice( ... )
+
+end
+
+-- token : seq< token >
+function parse( tokens )
+
+end
+
+
