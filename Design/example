@@ -98,7 +98,7 @@ enum name
     sym2,
 }
 
-var x = { expr, expr } ; // array literal
+var x = [ expr, expr ] ; // array literal
 
 
 do ( bind, unit )
@@ -108,3 +108,11 @@ do ( bind, unit )
     unit x ;
 }
 
+
+// TODO change enum to union
+// TODO change comments to lua style comments?
+// TODO match construct
+// TODO more string options?
+// TODO erlang style byte pattern matching?
+// TODO perl 6 style grammar parser?
+// TODO property constructor setters for structs?
