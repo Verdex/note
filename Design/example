@@ -68,9 +68,6 @@ x.Item1
 x.Item2
 x.Item3
 
-array[ int-expr ] = expr
-x = array[ int-expr ];
-array[ int-expr ].field 
 
 ( expr )
 
