@@ -116,3 +116,15 @@ do ( bind, unit )
 // TODO erlang style byte pattern matching?
 // TODO perl 6 style grammar parser?
 // TODO property constructor setters for structs?
+// TODO SOA ?
+
+// NOTE If array indexers dont exist then you can't 
+// assign into one and then you can pass by reference 
+// and still get pass by value semantics
+// Just make sure that an array of structs that goes 
+// through a foreach ends up with the struct copied
+// out of the array because otherwise you might
+// end up polluting the original array in a later
+// assignment of a field of the struct
+
+
