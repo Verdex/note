@@ -22,6 +22,7 @@ function expr( buffer, index )
     if buffer[index].type == tokenType.int then 
         return true, buffer, index + 1, { type = astType.int; value = buffer[index].value }
     end
+    return false
 end
 
 -- TODO test
