@@ -63,4 +63,15 @@ function doThis( action )
     end
 end
 
--- TODO map
+-- TODO test
+function map( parser, trans )
+    return function ( buffer, index )
+        local success, resBuffer, resIndex, value = parser( buffer, index )
+        if success then
+            return true, resBuffer, resIndex, trans( value )
+        else
+            return false
+        end
+    end
+end
+
