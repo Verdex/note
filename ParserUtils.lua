@@ -2,7 +2,6 @@
 
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
 
--- TODO test
 function choice( parsers )
     return function ( buffer, index ) 
         for _, p in ipairs( parsers ) do
@@ -15,14 +14,12 @@ function choice( parsers )
     end
 end
 
--- TODO test
 function unit( value )
     return function ( buffer, index )
         return true, buffer, index, value
     end
 end
 
--- TODO test
 function bind( parser, gen )
     return function ( buffer, index )
         local success, resBuffer, resIndex, value = parser( buffer, index )
@@ -35,7 +32,6 @@ function bind( parser, gen )
     end
 end
 
--- TODO test
 function match( tokenType, trans )
     return function ( buffer, index )
         if buffer[index].type == tokenType then
@@ -46,7 +42,6 @@ function match( tokenType, trans )
     end
 end
 
--- TODO test
 function endInput( buffer, index )
     if #buffer < index then
         return true, buffer, index, nil
@@ -55,7 +50,6 @@ function endInput( buffer, index )
     end
 end
 
--- TODO test
 function doThis( action )
     return function ( buffer, index )
         action()
@@ -63,7 +57,6 @@ function doThis( action )
     end
 end
 
--- TODO test
 function map( parser, trans )
     return function ( buffer, index )
         local success, resBuffer, resIndex, value = parser( buffer, index )
