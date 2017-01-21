@@ -25,7 +25,6 @@ function expr( buffer, index )
     return false
 end
 
--- TODO test
 function varDeclaration( buffer, index )
     if buffer[index].type ~= tokenType.var then return false end
     index = index + 1

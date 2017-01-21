@@ -6,7 +6,6 @@ astType =
     varDeclaration = "varDeclaration",
 
 
-
 }
 
 
