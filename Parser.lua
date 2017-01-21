@@ -1,6 +1,7 @@
 
 
 require "Token"
+require "AST"
 
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
 
@@ -18,7 +19,9 @@ function choice( parsers )
 end
 
 function expr( buffer, index )
-
+    if buffer[index].type == tokenType.int then 
+        return true, buffer, index + 1, { type = astType.int; value = buffer[index].value }
+    end
 end
 
 -- TODO test
@@ -36,5 +39,5 @@ function varDeclaration( buffer, index )
     buffer = exprBuffer
     if buffer[index].type ~= tokenType.semicolon then return false end
     index = index + 1
-    return true, buffer, index, nil -- TODO make node for exprvalue and var name
+    return true, buffer, index, { type = astType.varDeclaration; varName = varName; assignment = exprValue } 
 end
