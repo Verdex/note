@@ -43,6 +43,16 @@ function match( tokenType, trans )
     end
 end
 
+function check( tokenType )
+    return function ( buffer, index )
+        if buffer[index].type == tokenType then
+            return true, buffer, index + 1, nil 
+        else
+            return false, index
+        end
+    end
+end
+
 function endInput( buffer, index )
     if #buffer < index then
         return true, buffer, index, nil

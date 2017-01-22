@@ -60,12 +60,40 @@ function varDeclaration( buffer, index )
     return true, buffer, index, { type = astType.varDeclaration; varName = varName; assignment = exprValue } 
 end
 
+function symbol( buffer, index )
+    if buffer[index].type == tokenType.symbol then 
+        return true, buffer, index + 1, buffer[index].value 
+    else
+        return false, index
+    end
+end
 
+function indexedTypeSymbol( buffer, index )
+    return bind( symbol,                        function ( name )     return
+           bind( check( tokenType.openAngle ),  function ()           return
+           bind( typeSig,                       function ( indexSig ) return
+           bind( check( tokenType.closeAngle ), function ()           return 
+           unit( { type = astType.indexedType ; outer = name ; inner = indexSig } ) end ) end ) end ) end )( buffer, index )
+end
 
-local _type = choice { 
-                     }
-function typeP( buffer, index )
-    return _type( buffer, index )
+function typeSymbol( buffer, index )
+-- TODO indexedtypeSymbol OR symbol
+end
+
+function arrowType( buffer, index )
+end
+
+function typeList( buffer, index ) -- for tuple type
+end
+
+function tupleType( buffer, index )
+end
+
+function typeSig( buffer, index )
+    return choice { tupleType
+                  , arrowType
+                  , typeSymbol
+                  } ( buffer, index )
 end
 
 local _expr = choice { literals

@@ -7,8 +7,10 @@ astType =
     string = "string",
     varDeclaration = "varDeclaration",
     constDeclaration = "constDeclaration",
-
+    simpleType = "simpleType",
+    arrowType = "arrowType",
+    indexedType = "indexedType",
+    tupleType = "tupleType",
 
 }
-
 
