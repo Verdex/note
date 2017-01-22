@@ -1,6 +1,7 @@
 
 
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
+-- parser function : ( buffer, index ) -> ( failure, index )
 
 function choice( parsers )
     return function ( buffer, index ) 
@@ -10,7 +11,7 @@ function choice( parsers )
                 return true, resBuffer, resIndex, value
             end
         end
-        return false
+        return false, index
     end
 end
 
@@ -27,7 +28,7 @@ function bind( parser, gen )
             local nextParser = gen( value )
             return nextParser( resBuffer, resIndex )
         else
-            return false
+            return false, index
         end
     end
 end
@@ -37,7 +38,7 @@ function match( tokenType, trans )
         if buffer[index].type == tokenType then
             return true, buffer, index + 1, trans( buffer[index] )
         else
-            return false
+            return false, index
         end
     end
 end
@@ -46,7 +47,7 @@ function endInput( buffer, index )
     if #buffer < index then
         return true, buffer, index, nil
     else
-        return false
+        return false, index
     end
 end
 
@@ -63,7 +64,7 @@ function map( parser, trans )
         if success then
             return true, resBuffer, resIndex, trans( value )
         else
-            return false
+            return false, index
         end
     end
 end
