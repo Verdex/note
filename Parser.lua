@@ -8,6 +8,9 @@ require "ParserUtils"
 -- parser function : ( buffer, index ) -> ( failure, index )
 
 
+-- TODO all of the buffer indexes need to be checked to make sure we're not about to
+-- go past the end of the buffer ... probably just fix it in bind and then always use bind
+
 function literals( buffer, index )
     if buffer[index].type == tokenType.int then 
         return true, buffer, index + 1, { type = astType.int; value = buffer[index].value }
@@ -77,16 +80,23 @@ function indexedTypeSymbol( buffer, index )
 end
 
 function typeSymbol( buffer, index )
--- TODO indexedtypeSymbol OR symbol
+    return choice { indexedTypeSymbol
+                  , symbol
+                  --, map( symbol, function ( s ) return { type = astType.simpleType ; value = s.value } end )
+                  } ( buffer, index )
 end
 
 function arrowType( buffer, index )
-end
-
-function typeList( buffer, index ) -- for tuple type
+    return bind( typeSymbol, function ( t ) return
+           bind( check( tokenType.sub ), function () return
+           bind( check( tokenType.closeAngle ), function () return
+           bind( typeSig, function ( rest ) return
+           unit( { type = astType.arrowType ; first = t ; rest = rest } ) end ) end ) end ) end )( buffer, index )
 end
 
 function tupleType( buffer, index )
+    local typeList = function ( buffer, index ) 
+    end
 end
 
 function typeSig( buffer, index )

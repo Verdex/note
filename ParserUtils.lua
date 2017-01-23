@@ -21,6 +21,7 @@ function unit( value )
     end
 end
 
+-- TODO need to check the length of buffer to make sure we're not about to go over the length
 function bind( parser, gen )
     return function ( buffer, index )
         local success, resBuffer, resIndex, value = parser( buffer, index )
@@ -43,8 +44,10 @@ function match( tokenType, trans )
     end
 end
 
+require "Utils"
 function check( tokenType )
     return function ( buffer, index )
+        print( "blarg " .. index ) 
         if buffer[index].type == tokenType then
             return true, buffer, index + 1, nil 
         else
