@@ -44,10 +44,8 @@ function match( tokenType, trans )
     end
 end
 
-require "Utils"
 function check( tokenType )
     return function ( buffer, index )
-        print( "blarg " .. index ) 
         if buffer[index].type == tokenType then
             return true, buffer, index + 1, nil 
         else
