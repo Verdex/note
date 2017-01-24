@@ -8,9 +8,8 @@ require "ParserUtils"
 -- parser function : ( buffer, index ) -> ( failure, index )
 
 
--- TODO all of the buffer indexes need to be checked to make sure we're not about to
--- go past the end of the buffer ... probably just fix it in bind and then always use bind
 
+-- TODO need to avoid buffer out of bounds (switch to bind)
 function literals( buffer, index )
     if buffer[index].type == tokenType.int then 
         return true, buffer, index + 1, { type = astType.int; value = buffer[index].value }
@@ -28,7 +27,7 @@ function literals( buffer, index )
     -- TODO array literals
 end
 
-
+-- TODO need to avoid buffer out of bounds (switch to bind)
 function constDeclaration( buffer, index )
     if buffer[index].type ~= tokenType.const then return false, index end
     index = index + 1
@@ -46,6 +45,7 @@ function constDeclaration( buffer, index )
     return true, buffer, index, { type = astType.constDeclaration; varName = varName; assignment = exprValue } 
 end
 
+-- TODO need to avoid buffer out of bounds (switch to bind)
 function varDeclaration( buffer, index )
     if buffer[index].type ~= tokenType.var then return false, index end
     index = index + 1
@@ -64,11 +64,7 @@ function varDeclaration( buffer, index )
 end
 
 function symbol( buffer, index )
-    if buffer[index].type == tokenType.symbol then 
-        return true, buffer, index + 1, buffer[index].value 
-    else
-        return false, index
-    end
+    return match( tokenType.symbol, function ( s ) return s.value end )( buffer, index )
 end
 
 function indexedTypeSymbol( buffer, index )
@@ -81,16 +77,15 @@ end
 
 function typeSymbol( buffer, index )
     return choice { indexedTypeSymbol
-                  , symbol
-                  --, map( symbol, function ( s ) return { type = astType.simpleType ; value = s.value } end )
+                  , map( symbol, function ( s ) return { type = astType.simpleType ; value = s } end )
                   } ( buffer, index )
 end
 
 function arrowType( buffer, index )
-    return bind( typeSymbol, function ( t ) return
-           bind( check( tokenType.sub ), function () return
+    return bind( typeSymbol,                    function ( t ) return
+           bind( check( tokenType.sub ),        function () return
            bind( check( tokenType.closeAngle ), function () return
-           bind( typeSig, function ( rest ) return
+           bind( typeSig,                       function ( rest ) return
            unit( { type = astType.arrowType ; first = t ; rest = rest } ) end ) end ) end ) end )( buffer, index )
 end
 
