@@ -79,9 +79,9 @@ function tupleType( buffer, index )
                       } ( buffer, index )
     end
 
-    return bind( check( tokenType.openParen ), function () return
-           bind( typeSig, function ( t ) return 
-           bind( typeList, function ( rest ) return
+    return bind( check( tokenType.openParen ), function ()       return
+           bind( typeSig,                      function ( t )    return 
+           bind( typeList,                     function ( rest ) return
            unit( { type = astType.tupleType; typeList = insert( rest, 1, t ) } ) end ) end ) end )( buffer, index )
 end
 
