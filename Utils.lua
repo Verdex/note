@@ -50,4 +50,8 @@ function display( t )
     end
 end
 
+function insert( table, index, value )
+    table.insert( table, index, value )
+    return table
+end
 
