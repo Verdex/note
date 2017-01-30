@@ -65,12 +65,13 @@ function arrowType( buffer, index )
            unit( { type = astType.arrowType ; first = t ; rest = rest } ) end ) end ) end ) end )( buffer, index )
 end
 
+-- TODO tuple type is broken
 function tupleType( buffer, index )
     local typeListTail = function ( buffer, index )
         return bind( check( tokenType.comma ), function ()       return
                bind( typeSig,                  function ( t )    return
-               bind( typeListTail,             function ( rest ) return
-               unit( insert( rest, 1  t ) ) end ) end )( buffer, index )
+               bind( typeListTail,             function ( rest ) return 
+               unit( insert( rest, 1, t ) ) end ) end ) end )( buffer, index )
     end
 
     local typeList = function ( buffer, index ) 
@@ -79,10 +80,11 @@ function tupleType( buffer, index )
                       } ( buffer, index )
     end
 
-    return bind( check( tokenType.openParen ), function ()       return
-           bind( typeSig,                      function ( t )    return 
-           bind( typeList,                     function ( rest ) return
-           unit( { type = astType.tupleType; typeList = insert( rest, 1, t ) } ) end ) end ) end )( buffer, index )
+    return bind( check( tokenType.openParen ),  function ()       return
+           bind( typeSig,                       function ( t )    return 
+           bind( typeList,                      function ( rest ) return
+           bind( check( tokenType.closeParen ), function ()       return
+           unit( { type = astType.tupleType; typeList = insert( rest, 1, t ) } ) end ) end ) end ) end )( buffer, index )
 end
 
 function typeSig( buffer, index )
