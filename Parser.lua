@@ -9,7 +9,6 @@ require "ParserUtils"
 
 
 
--- TODO need to avoid buffer out of bounds (switch to bind)
 function literals( buffer, index )
     return choice { match( tokenType.int,      function ( v ) return { type = astType.int; value = buffer[index].value } end )
                   , match( tokenType.float,    function ( v ) return { type = astType.float; value = buffer[index].value } end )
