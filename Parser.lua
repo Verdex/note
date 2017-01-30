@@ -25,42 +25,25 @@ function literals( buffer, index )
         return false, index
     end
     -- TODO array literals
+    -- TODO function literals?
 end
 
--- TODO need to avoid buffer out of bounds (switch to bind)
 function constDeclaration( buffer, index )
-    if buffer[index].type ~= tokenType.const then return false, index end
-    index = index + 1
-    if buffer[index].type ~= tokenType.symbol then return false, index end
-    local varName = buffer[index].value
-    index = index + 1
-    if buffer[index].type ~= tokenType.assign then return false, index end
-    index = index + 1
-    local exprSuccess, exprBuffer, exprIndex, exprValue = expr( buffer, index )
-    if not exprSuccess then return false, index end 
-    index = exprIndex
-    buffer = exprBuffer
-    if buffer[index].type ~= tokenType.semicolon then return false, index end
-    index = index + 1
-    return true, buffer, index, { type = astType.constDeclaration; varName = varName; assignment = exprValue } 
+    return bind( check( tokenType.const ),     function ()            return
+           bind( symbol,                       function ( varName )   return
+           bind( check( tokenType.assign ),    function ()            return
+           bind( expr,                         function ( exprValue ) return
+           bind( check( tokenType.semicolon ), function ()            return
+           unit( { type = astType.constDeclaration; varName = varName; assignment = exprValue } ) end ) end ) end ) end ) end )( buffer, index )
 end
 
--- TODO need to avoid buffer out of bounds (switch to bind)
 function varDeclaration( buffer, index )
-    if buffer[index].type ~= tokenType.var then return false, index end
-    index = index + 1
-    if buffer[index].type ~= tokenType.symbol then return false, index end
-    local varName = buffer[index].value
-    index = index + 1
-    if buffer[index].type ~= tokenType.assign then return false, index end
-    index = index + 1
-    local exprSuccess, exprBuffer, exprIndex, exprValue = expr( buffer, index )
-    if not exprSuccess then return false, index end 
-    index = exprIndex
-    buffer = exprBuffer
-    if buffer[index].type ~= tokenType.semicolon then return false end
-    index = index + 1
-    return true, buffer, index, { type = astType.varDeclaration; varName = varName; assignment = exprValue } 
+    return bind( check( tokenType.var ),       function ()            return
+           bind( symbol,                       function ( varName )   return
+           bind( check( tokenType.assign ),    function ()            return
+           bind( expr,                         function ( exprValue ) return
+           bind( check( tokenType.semicolon ), function ()            return
+           unit( { type = astType.varDeclaration; varName = varName; assignment = exprValue } ) end ) end ) end ) end ) end )( buffer, index )
 end
 
 function symbol( buffer, index )
@@ -82,9 +65,9 @@ function typeSymbol( buffer, index )
 end
 
 function arrowType( buffer, index )
-    return bind( typeSymbol,                    function ( t ) return
-           bind( check( tokenType.sub ),        function () return
-           bind( check( tokenType.closeAngle ), function () return
+    return bind( typeSymbol,                    function ( t )    return
+           bind( check( tokenType.sub ),        function ()       return
+           bind( check( tokenType.closeAngle ), function ()       return
            bind( typeSig,                       function ( rest ) return
            unit( { type = astType.arrowType ; first = t ; rest = rest } ) end ) end ) end ) end )( buffer, index )
 end
