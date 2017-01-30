@@ -88,3 +88,6 @@ function map( parser, trans )
     end
 end
 
+function nothing( buffer, index )
+    return true, buffer, index, nil
+end
