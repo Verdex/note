@@ -11,19 +11,12 @@ require "ParserUtils"
 
 -- TODO need to avoid buffer out of bounds (switch to bind)
 function literals( buffer, index )
-    if buffer[index].type == tokenType.int then 
-        return true, buffer, index + 1, { type = astType.int; value = buffer[index].value }
-    elseif buffer[index].type == tokenType.float then  -- TODO test
-        return true, buffer, index + 1, { type = astType.float; value = buffer[index].value }
-    elseif buffer[index].type == tokenType["true"] then  -- TODO test
-        return true, buffer, index + 1, { type = astType.bool; value = true }
-    elseif buffer[index].type == tokenType["false"] then  -- TODO test
-        return true, buffer, index + 1, { type = astType.bool; value = false }
-    elseif buffer[index].type == tokenType.string then  -- TODO test
-        return true, buffer, index + 1, { type = astType.string; value = buffer[index].value }
-    else 
-        return false, index
-    end
+    return choice { match( tokenType.int,      function ( v ) return { type = astType.int; value = buffer[index].value } end )
+                  , match( tokenType.float,    function ( v ) return { type = astType.float; value = buffer[index].value } end )
+                  , match( tokenType["true"],  function ( v ) return { type = astType.bool; value = true } end )
+                  , match( tokenType["false"], function ( v ) return { type = astType.bool; value = false } end )
+                  , match( tokenType.string,   function ( v ) return { type = astType.string; value = buffer[index].value } end )
+                  } ( buffer, index )
     -- TODO array literals
     -- TODO function literals?
 end
