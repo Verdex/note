@@ -11,11 +11,11 @@ require "Utils"
 
 
 function literals( buffer, index )
-    return choice { match( tokenType.int,      function ( v ) return { type = astType.int; value = buffer[index].value } end )
-                  , match( tokenType.float,    function ( v ) return { type = astType.float; value = buffer[index].value } end )
+    return choice { match( tokenType.int,      function ( v ) return { type = astType.int; value = v.value } end )
+                  , match( tokenType.float,    function ( v ) return { type = astType.float; value = v.value } end ) -- TODO this is wrong.  need exponent, etc
                   , match( tokenType["true"],  function ( v ) return { type = astType.bool; value = true } end )
                   , match( tokenType["false"], function ( v ) return { type = astType.bool; value = false } end )
-                  , match( tokenType.string,   function ( v ) return { type = astType.string; value = buffer[index].value } end )
+                  , match( tokenType.string,   function ( v ) return { type = astType.string; value = v.value } end )
                   } ( buffer, index )
     -- TODO array literals
     -- TODO function literals?
@@ -65,21 +65,21 @@ function arrowType( buffer, index )
            unit( { type = astType.arrowType ; first = t ; rest = rest } ) end ) end ) end ) end )( buffer, index )
 end
 
+function typeListTail( buffer, index )
+    return bind( check( tokenType.comma ), function ()       return
+           bind( typeSig,                  function ( t )    return
+           bind( typeListTail,             function ( rest ) return 
+           unit( insert( rest, 1, t ) ) end ) end ) end )( buffer, index )
+end
+
+function typeList( buffer, index ) 
+    return choice { typeListTail
+                  , nothing
+                  } ( buffer, index )
+end
+
 -- TODO tuple type is broken
 function tupleType( buffer, index )
-    local typeListTail = function ( buffer, index )
-        return bind( check( tokenType.comma ), function ()       return
-               bind( typeSig,                  function ( t )    return
-               bind( typeListTail,             function ( rest ) return 
-               unit( insert( rest, 1, t ) ) end ) end ) end )( buffer, index )
-    end
-
-    local typeList = function ( buffer, index ) 
-        return choice { typeListTail
-                      , nothing
-                      } ( buffer, index )
-    end
-
     return bind( check( tokenType.openParen ),  function ()       return
            bind( typeSig,                       function ( t )    return 
            bind( typeList,                      function ( rest ) return
