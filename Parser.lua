@@ -81,7 +81,7 @@ end
 
 function typeList( buffer, index ) 
     return choice { typeListTail
-                  , nothing
+                  , map( nothing, function () return {}  end )
                   } ( buffer, index )
 end
 
