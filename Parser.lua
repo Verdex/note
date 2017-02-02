@@ -12,7 +12,14 @@ require "Utils"
 
 function literals( buffer, index )
     return choice { match( tokenType.int,      function ( v ) return { type = astType.int; value = v.value } end )
-                  , match( tokenType.float,    function ( v ) return { type = astType.float; value = v.value } end ) -- TODO this is wrong.  need exponent, etc
+                  , match( tokenType.float,    
+                        function ( v ) 
+                            return { type = astType.float 
+                                   ; exponent = v.exponent 
+                                   ; intValue = v.intValue 
+                                   ; floatValue = v.floatValue 
+                                   }
+                        end ) 
                   , match( tokenType["true"],  function ( v ) return { type = astType.bool; value = true } end )
                   , match( tokenType["false"], function ( v ) return { type = astType.bool; value = false } end )
                   , match( tokenType.string,   function ( v ) return { type = astType.string; value = v.value } end )

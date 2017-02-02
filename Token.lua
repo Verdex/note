@@ -223,10 +223,10 @@ tokenMaps =
     -- keywords end
 
     { 
-        pattern = "(%d+).(%d+)";
+        pattern = "(%d+)%.(%d+)[Ee](-?%d+)";
         trans = function ( f ) 
             return { type = tokenType.float 
-                   ; exponent = false
+                   ; exponent = tonumber( f[3] ) 
                    ; intValue = tonumber( f[1] ) 
                    ; floatValue = tonumber( f[2] ) 
                    } 
@@ -234,10 +234,10 @@ tokenMaps =
     },
 
     { 
-        pattern = "(%d+).(%d+)[Ee](-?%d+)";
+        pattern = "(%d+)%.(%d+)";
         trans = function ( f ) 
             return { type = tokenType.float 
-                   ; exponent = tonumber( f[3] ) 
+                   ; exponent = false
                    ; intValue = tonumber( f[1] ) 
                    ; floatValue = tonumber( f[2] ) 
                    } 
