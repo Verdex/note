@@ -75,7 +75,7 @@ end
 function typeListTail( buffer, index )
     return bind( check( tokenType.comma ), function ()       return
            bind( typeSig,                  function ( t )    return
-           bind( typeList,             function ( rest ) return 
+           bind( typeList,                 function ( rest ) return 
            unit( insert( rest, 1, t ) ) end ) end ) end )( buffer, index )
 end
 
@@ -85,7 +85,6 @@ function typeList( buffer, index )
                   } ( buffer, index )
 end
 
--- TODO tuple type is broken
 function tupleType( buffer, index )
     return bind( check( tokenType.openParen ),  function ()       return
            bind( typeSig,                       function ( t )    return 
