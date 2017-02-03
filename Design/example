@@ -112,7 +112,7 @@ do ( bind, unit )
 // TODO change enum to union
 // TODO change comments to lua style comments?
 // TODO match construct
-// TODO more string options?
+// TODO more string options? (raw string etc)
 // TODO erlang style byte pattern matching?
 // TODO perl 6 style grammar parser?
 // TODO property constructor setters for structs?
