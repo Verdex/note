@@ -23,9 +23,6 @@ end
 
 function bind( parser, gen )
     return function ( buffer, index )
-        if index > #buffer then
-            return false, index
-        end
         local success, resBuffer, resIndex, value = parser( buffer, index )
         if success then
             local nextParser = gen( value )
