@@ -11,6 +11,6 @@ astType =
     arrowType = "arrowType",
     indexedType = "indexedType",
     tupleType = "tupleType",
-
+    typeDefinition = "typeDefinition",
 }
 

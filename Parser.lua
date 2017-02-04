@@ -106,6 +106,15 @@ function typeSig( buffer, index )
                   } ( buffer, index )
 end
 
+function typeDefinition( buffer, index )
+    return bind( check( tokenType.type ),      function ()             return
+           bind( symbol,                       function ( name )       return
+           bind( check( tokenType.colon ),     function ()             return
+           bind( typeSig,                      function ( typeOfName ) return
+           bind( check( tokenType.semicolon ), function ()             return
+           unit( { type = astType.typeDefinition; name = name; typeOfName = typeOfName } ) end ) end ) end ) end ) end )( buffer, index )
+end
+
 local _expr = choice { literals
                      , 
                      }
