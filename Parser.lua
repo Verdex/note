@@ -81,7 +81,7 @@ end
 
 function typeList( buffer, index ) 
     return choice { typeListTail
-                  , map( nothing, function () return {}  end )
+                  , map( nothing, function () return {} end )
                   } ( buffer, index )
 end
 
@@ -93,14 +93,22 @@ function tupleType( buffer, index )
            unit( { type = astType.tupleType; typeList = insert( rest, 1, t ) } ) end ) end ) end ) end )( buffer, index )
 end
 
+function voidType( buffer, index )
+    return bind( check( tokenType.openParen ),  function () return
+           bind( check( tokenType.closeParen ), function () return 
+           unit( { type = astType.voidType } ) end ) end )( buffer, index )
+end
+
 function allButArrowType( buffer, index )
-    return choice { tupleType
+    return choice { voidType 
+                  , tupleType
                   , typeSymbol
                   } ( buffer, index )
 end
 
 function typeSig( buffer, index )
-    return choice { arrowType 
+    return choice { voidType 
+                  , arrowType 
                   , tupleType 
                   , typeSymbol
                   } ( buffer, index )
