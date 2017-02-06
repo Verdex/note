@@ -133,14 +133,14 @@ end
 function functionDefinitionParamConst( buffer, index )
     return bind( symbol,                   function ( name ) return
            bind( check( tokenType.colon ), function ()       return
-           bind( check( tokenType.var ),   function ()       return
+           bind( check( tokenType.const ), function ()       return
            unit( { type = astType.paramConst, name = name } ) end ) end ) end )( buffer, index )
 end
 
 function functionDefinitionParam( buffer, index )   
     return choice { functionDefinitionParamVar
-                  , map( symbol, function ( s ) return { type = astType.paramConst, name = s } end )
                   , functionDefinitionParamConst
+                  , map( symbol, function ( s ) return { type = astType.paramConst, name = s } end )
                   } ( buffer, index )
 end
 
@@ -162,7 +162,7 @@ function functionDefinitionParameters( buffer, index )
            bind( functionDefinitionParam,       function ( param ) return
            bind( functionParamList,             function ( rest )  return
            bind( check( tokenType.closeParen ), function ()        return
-           unit( { type = astType.paramList; paramList = insert( rest, 1, rest ) } ) end ) end ) end ) end )( buffer, index )
+           unit( { type = astType.paramList; paramList = insert( rest, 1, param ) } ) end ) end ) end ) end )( buffer, index )
 end
 
 function functionDefinitionEmptyParameter( buffer, index )
@@ -173,6 +173,7 @@ end
 
 -- todo
 function functionDefinition( buffer, index )
+-- TOOD use choice { functionDefinitionParameters, functionDefinitionEmptyParameter }
 end
 
 local _expr = choice { literals
