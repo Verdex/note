@@ -32,8 +32,13 @@ else
 type name : someType ;  /* concrete-type, 'a -> 'a, 'a, ('a, 'b), array<'a> */
 var name = expr ;
 const name = expr ; 
+// everything is pass by value, but you can reassign to a var inside of a function.  attempt to assign to const causes compile failure
 func name( x, y : const , z : var ) // default to const (b/c everything is pass by value you don't have to worry about  the const-ness of the value
 {
+    // so the question is if you have vars and consts what is a parameter into a method.  normally const, but you can choose between const or var
+    // it doesn't change the type of the function, just what you can do to the value inside of the function.  it's a sign to anyone who wants
+    // to understand what they can ignore in the function.  but everything is always going to be pass by value so you don't have to see
+    // this in order to understand how to use any given function.
     return blah ;
 }
 
@@ -117,6 +122,7 @@ do ( bind, unit )
 // TODO perl 6 style grammar parser?
 // TODO property constructor setters for structs?
 // TODO SOA ?
+// TODO local function definitions
 
 // NOTE If array indexers dont exist then you can't 
 // assign into one and then you can pass by reference 
