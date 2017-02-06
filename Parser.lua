@@ -123,6 +123,58 @@ function typeDefinition( buffer, index )
            unit( { type = astType.typeDefinition; name = name; typeOfName = typeOfName } ) end ) end ) end ) end ) end )( buffer, index )
 end
 
+function functionDefinitionParamVar( buffer, index )
+    return bind( symbol,                   function ( name ) return
+           bind( check( tokenType.colon ), function ()       return
+           bind( check( tokenType.var ),   function ()       return
+           unit( { type = astType.paramVar, name = name } ) end ) end ) end )( buffer, index )
+end
+
+function functionDefinitionParamConst( buffer, index )
+    return bind( symbol,                   function ( name ) return
+           bind( check( tokenType.colon ), function ()       return
+           bind( check( tokenType.var ),   function ()       return
+           unit( { type = astType.paramConst, name = name } ) end ) end ) end )( buffer, index )
+end
+
+function functionDefinitionParam( buffer, index )   
+    return choice { functionDefinitionParamVar
+                  , map( symbol, function ( s ) return { type = astType.paramConst, name = s } end )
+                  , functionDefinitionParamConst
+                  } ( buffer, index )
+end
+
+function functionParamListTail( buffer, index )
+    return bind( check( tokenType.comma ), function ()        return
+           bind( functionDefinitionParam,  function ( param ) return
+           bind( functionParamList,        function ( rest )  return
+           unit( insert( rest, 1, param ) ) end ) end ) end )( buffer, index ) 
+end
+
+function functionParamList( buffer, index )
+    return choice { functionParamListTail
+                  , map( nothing, function () return {} end )
+                  } ( buffer, index )
+end
+
+function functionDefinitionParameters( buffer, index )
+    return bind( check( tokenType.openParen ),  function ()        return
+           bind( functionDefinitionParam,       function ( param ) return
+           bind( functionParamList,             function ( rest )  return
+           bind( check( tokenType.closeParen ), function ()        return
+           unit( { type = astType.paramList; paramList = insert( rest, 1, rest ) } ) end ) end ) end ) end )( buffer, index )
+end
+
+function functionDefinitionEmptyParameter( buffer, index )
+    return bind( check( tokenType.openParen ),  function () return 
+           bind( check( tokenType.closeParen ), function () return
+           unit( { type = astType.paramList; paramList = {} } ) end ) end )( buffer, index )
+end
+
+-- todo
+function functionDefinition( buffer, index )
+end
+
 local _expr = choice { literals
                      , 
                      }
