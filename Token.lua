@@ -71,7 +71,7 @@ tokenMaps =
     },
 
     { 
-        pattern = [[%"(.*)%"]];
+        pattern = [[%"(.-)%"]];
         trans = function ( s ) return { type = tokenType.string; value = s[1] } end
     },
 
