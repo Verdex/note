@@ -52,7 +52,7 @@ local function parseDoNotation( buffer, index )
           unit( { list = list; unitValue = u; bind = bindName; unit = unitName } ) end ) end ) end ) end ) end ) end ) end ) end ) end ) end )( buffer, index )
 end
 
-function nextItem( list, index )
+local function nextItem( list, index )
     index = index + 1
     local n = list.list[index]
     if not n then
@@ -64,15 +64,15 @@ function nextItem( list, index )
     end
 end
 
-function unitGen( unitName, unitValue )
+local function unitGen( unitName, unitValue )
     return string.format( "%s ( %s )", unitName, unitValue )
 end
 
-function bindNoValGen( bNode, list, index )
+local function bindNoValGen( bNode, list, index )
     return string.format( "%s( %s, function () return\n%s end )", list.bind, bNode.value, nextItem( list, index ) )
 end
 
-function bindGen( bNode, list, index)
+local function bindGen( bNode, list, index)
     return string.format( "%s( %s, function ( %s ) return\n%s end )", list.bind, bNode.value, bNode.var, nextItem( list, index ) )
 end
 
@@ -83,11 +83,8 @@ function doNotation( str )
         error "an error occurred while parsing the do notation"
     end
    
-    print( string.format( "return function( buffer, index )\n    return %s ( buffer, index )\nend", nextItem( value, 0 ) ) )
-    -- TODO  load
-
+    return string.format( "return function( buffer, index )\n    return %s ( buffer, index )\nend", nextItem( value, 0 ) )
 end
-
 
 
 -- input : string, tokMap : { pattern : regex; trans : [string] -> tok }
