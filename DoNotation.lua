@@ -2,43 +2,43 @@
 require "Utils"
 require "ParserUtils"
 
-function symbol( buffer, index )
+local function symbol( buffer, index )
     return match( tokenType.symbol, function ( s ) return s.value end )( buffer, index )
 end
 
-function parseUnit( buffer, index )
+local function parseUnit( buffer, index )
     return match( tokenType.unit, function ( s ) return s.value end )( buffer, index )
 end
 
-function parseArrow( buffer, index )
+local function parseArrow( buffer, index )
     return bind( symbol,                                                      function ( name ) return 
            bind( match( tokenType.arrow, function ( s ) return s.value end ), function ( v )    return 
            unit( { type = "arrow"; value = v ; var = name } ) end ) end )( buffer, index )
 end
 
-function parseNoArrow( buffer, index )
+local function parseNoArrow( buffer, index )
     return match( tokenType.noArrow, function ( s ) return { type = "noArrow" ; value = s.value } end )( buffer, index )
 end
 
-function statement( buffer, index )
+local function statement( buffer, index )
     return choice { parseArrow
                   , parseNoArrow
                   } ( buffer, index )
 end
 
-function statementList( buffer, index )
+local function statementList( buffer, index )
     return choice { statementListTail
                   , map( nothing, function () return {} end )
                   } ( buffer, index )
 end
 
-function statementListTail( buffer, index )
+local function statementListTail( buffer, index )
     return bind( statement,     function ( s )    return
            bind( statementList, function ( rest ) return
            unit( insert( rest, 1, s ) ) end ) end )( buffer, index )
 end
 
-function parseDoNotation( buffer, index )
+local function parseDoNotation( buffer, index )
    return bind( check( tokenType["do"] ),      function ()           return
           bind( check( tokenType.openParen ),  function ()           return
           bind( symbol,                        function ( bindName ) return
@@ -49,18 +49,49 @@ function parseDoNotation( buffer, index )
           bind( statementList,                 function ( list )     return
           bind( parseUnit,                     function ( u )        return
           bind( check( tokenType.closeCurly ), function ()           return
-          unit( { list = list; unit = u } ) end ) end ) end ) end ) end ) end ) end ) end ) end ) end )( buffer, index )
+          unit( { list = list; unitValue = u; bind = bindName; unit = unitName } ) end ) end ) end ) end ) end ) end ) end ) end ) end ) end )( buffer, index )
+end
+
+function nextItem( list, index )
+    index = index + 1
+    local n = list.list[index]
+    if not n then
+        return unitGen( list.unit, list.unitValue )
+    elseif n.type == "noArrow" then
+        return bindNoValGen(  n, list, index )
+    elseif n.type == "arrow" then
+        return bindGen(  n, list, index )
+    end
+end
+
+function unitGen( unitName, unitValue )
+    return string.format( "%s ( %s )", unitName, unitValue )
+end
+
+function bindNoValGen( bNode, list, index )
+    return string.format( "%s( %s, function () return\n%s end )", list.bind, bNode.value, nextItem( list, index ) )
+end
+
+function bindGen( bNode, list, index)
+    return string.format( "%s( %s, function ( %s ) return\n%s end )", list.bind, bNode.value, bNode.var, nextItem( list, index ) )
 end
 
 function doNotation( str )
-    local x = lex( str, tokenMaps )
-    --local pass, buffer, index, value = 
-
+    local tokens = lex( str, tokenMaps )
+    local pass, buffer, index, value = parseDoNotation( tokens, 1 )
+    if not pass then
+        error "an error occurred while parsing the do notation"
+    end
+   
+    print( string.format( "return function( buffer, index )\n    return %s ( buffer, index )\nend", nextItem( value, 0 ) ) )
+    -- TODO  load
 
 end
 
+
+
 -- input : string, tokMap : { pattern : regex; trans : [string] -> tok }
-function lex( input, tokMaps )
+local function lex( input, tokMaps )
     
     local start = 1
 
@@ -101,7 +132,7 @@ function lex( input, tokMaps )
 end
         
 
-tokenType = 
+local tokenType = 
 {
     ignore = "ignore";
     symbol = "symbol";
@@ -116,7 +147,7 @@ tokenType =
     unit = "unit";
 }
 
-tokenMaps = 
+local tokenMaps = 
 {
     { 
         pattern = [[//.-%c]];
