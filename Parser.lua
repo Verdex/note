@@ -4,6 +4,7 @@ require "Token"
 require "AST"
 require "ParserUtils"
 require "Utils"
+require "DoNotation"
 
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
 -- parser function : ( buffer, index ) -> ( failure, index )
