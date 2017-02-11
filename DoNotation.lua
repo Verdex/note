@@ -76,6 +76,10 @@ local function bindGen( bNode, list, index)
     return string.format( "%s( %s, function ( %s ) return\n%s end )", list.bind, bNode.value, bNode.var, nextItem( list, index ) )
 end
 
+
+-- Call doNotation [[ blah ]] and then call load on the result
+-- unless you want to do weird caching/env stuff loading at point
+-- of usage is probably going to go better
 function doNotation( str )
     local tokens = lex( str, tokenMaps )
     local pass, buffer, index, value = parseDoNotation( tokens, 1 )
