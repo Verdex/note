@@ -197,8 +197,28 @@ function expr( buffer, index )
     return _expr( buffer, index )
 end
 
-local _stm = choice {
+local _stm = choice { constDefinition
+                    , varDefinition
                     }
 function stm( buffer, index )
     return _stm( buffer, index )
+end
+
+function stmList( buffer, index )
+    return choice { stmListTail
+                  , map( nothing, function () return {} end )
+                  } ( buffer, index )
+end
+
+local stmListTailData = false
+function stmListTail( buffer, index )
+    stmListTailData = stmdListTailData or load( doNotation [[
+        do ( bind, mu )
+        {
+            state <- stm ;
+            rest <- stmList ;
+            unit insert( rest, 1, state ) ;
+        }
+]] )()
+    return stmListTailData( buffer, index )
 end
