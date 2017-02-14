@@ -16,5 +16,6 @@ astType =
     paramVar = "paramVar",
     paramConst = "paramConst",
     paramList = "paramList",
+    functionDefinition = "functionDefinition",
 }
 

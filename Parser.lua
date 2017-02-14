@@ -9,6 +9,7 @@ require "DoNotation"
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
 -- parser function : ( buffer, index ) -> ( failure, index )
 
+mu = unit
 
 
 function literals( buffer, index )
@@ -172,9 +173,21 @@ function functionDefinitionEmptyParameter( buffer, index )
            unit( { type = astType.paramList; paramList = {} } ) end ) end )( buffer, index )
 end
 
--- todo
+local funcDefData = false
 function functionDefinition( buffer, index )
--- TOOD use choice { functionDefinitionParameters, functionDefinitionEmptyParameter }
+    funcDefData = funcDefData or load( doNotation [[
+    do ( bind, mu )
+    {
+        |- check( tokenType.func ) ;
+        funcName <- symbol ;
+        params <- choice { functionDefinitionEmptyParameter, functionDefinitionParameters } ;
+        |- check( tokenType.openCurly ) ;
+        stms <- stm ; 
+        |- check( tokenType.closeCurly ) ;
+        unit { type = astType.functionDefinition, name = funcName, parameters = params, statements = stms } ;
+    }
+]] )()
+    return funcDefData( buffer, index )
 end
 
 local _expr = choice { literals
