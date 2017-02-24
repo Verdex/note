@@ -173,17 +173,22 @@ function functionDefinitionEmptyParameter( buffer, index )
            unit( { type = astType.paramList; paramList = {} } ) end ) end )( buffer, index )
 end
 
-local funcDefData = false
 function functionDefinition( buffer, index )
     funcDefData = funcDefData or load( doNotation [[
     do ( bind, mu )
     {
         |- check( tokenType.func ) ;
+        |- doThis( function () print( "one" ) end ) ;
         funcName <- symbol ;
+        |- doThis( function () print( "two" ) end ) ;
         params <- choice { functionDefinitionEmptyParameter, functionDefinitionParameters } ;
+        |- doThis( function () print( "three" ) end ) ;
         |- check( tokenType.openCurly ) ;
+        |- doThis( function () print( "four" ) end ) ;
         stms <- stm ; 
+        |- doThis( function () print( "five" ) end ) ;
         |- check( tokenType.closeCurly ) ;
+        |- doThis( function () print( "six" ) end ) ;
         unit { type = astType.functionDefinition, name = funcName, parameters = params, statements = stms } ;
     }
 ]] )()
@@ -210,7 +215,6 @@ function stmList( buffer, index )
                   } ( buffer, index )
 end
 
-local stmListTailData = false
 function stmListTail( buffer, index )
     stmListTailData = stmdListTailData or load( doNotation [[
         do ( bind, mu )
