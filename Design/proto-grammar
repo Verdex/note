@@ -2,7 +2,7 @@
 
 check : symbol -> m a :: check( blah )
 map : m a -> ( a -> b ) -> m b :: map( parser, x -> expr )
-debug : string -> m () :: debug( blah blah blah )
+debug : string -> m () :: debug( "blah blah blah" )
 choice : [m a] -> m a :: choice( parser, parser, parser )
 insert : [a] -> int -> a -> [a] :: insert( array, 1, item )
 empty : [a] :: empty 
