@@ -14,6 +14,7 @@ tokenType =
     openCurly = "openCurly";
     closeCurly = "closeCurly";
     comma = "comma";
+    string = "string";
 
 
     -- keywords
@@ -55,6 +56,16 @@ tokenMaps =
     { 
         pattern = "%s";
         trans = function () return { type = tokenType.ignore } end
+    },
+
+    {
+        pattern = "<%-";
+        trans = function () return { type = tokenType.leftArrow } end
+    },
+
+    {
+        pattern = "%->";
+        trans = function () return { type = tokenType.rightArrow } end
     },
 
     -- keywords
