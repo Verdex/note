@@ -1,0 +1,47 @@
+
+
+check : symbol -> m a :: check( blah )
+map : m a -> ( a -> b ) -> m b :: map( parser, x -> expr )
+debug : string -> m () :: debug( blah blah blah )
+choice : [m a] -> m a :: choice( parser, parser, parser )
+insert : [a] -> int -> a -> [a] :: insert( array, 1, item )
+empty : [a] :: empty 
+nothing : m () :: nothing
+endInput : m a
+
+lex
+
+    term blah =
+
+
+    end
+
+end
+
+
+grammar
+
+    main = blah ;
+
+    term name = 
+        { 
+            term inner =
+                stuff
+            end
+            term otherInner =
+                otherStuff
+            end
+        }
+        blah <- parser
+        otherBlah <- map( parser, x -> z )
+        check( struct_name )
+        ikky <- check( text )
+        blah <- choice( something, nothing )
+        debug ( message to the user )
+        endInput
+        return jab { ikky ; other }   // use variable as field name
+    end
+
+end
+
+
