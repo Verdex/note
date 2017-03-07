@@ -214,13 +214,13 @@ end
 function expr( buffer, index )
     return choice { literals
                   , 
-                  }
+                  } ( buffer, index )
 end
 
 function stm( buffer, index )
     return choice { constDefinition
                   , varDefinition
-                  }
+                  } ( buffer, index )
 end
 
 function stmList( buffer, index )
