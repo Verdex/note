@@ -39,7 +39,7 @@ grammar
         check( struct_name ) ;
         ikky <- check( text ) ;
         blah <- choice( something, nothing ) ;
-        debug ( message to the user ) ;
+        debug ( "message to the user" ) ;
         endInput ;
         return jab { ikky ; other } ;  // use variable as field name
     end

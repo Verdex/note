@@ -53,9 +53,16 @@ function struct( buffer, index )
            unit( { type = astType.struct ; name = structType ; fields = fields } ) end ) end ) end ) end )( buffer, index )
 end
 
+
+
+function debugE( buffer, index )
+    return bind( check( tokenType.debug ), function () return
+           bind( check( tokenType.openParen ), function () return
+           bind(
+
 function expr( buffer, index )
     return choice { literals
-                  , 
+                  , struct
                   } ( buffer, index )
 end
 
