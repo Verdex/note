@@ -31,12 +31,28 @@ function literals( buffer, index )
 end
 
 function constDeclaration( buffer, index )
-    return bind( check( tokenType.const ),     function ()            return
+      local x = doNotation [[ 
+        do( bind, mu )
+        {
+            |- check( tokentype.const ) ;
+            varname <- symbol ;
+            |- check( tokentype.assign ) ;
+            |- dothis( function () print( "blarg " .. expr ) end )
+            exprvalue <- expr ;
+            |- check( tokentype.semicolon ) ;
+            unit { type = asttype.constdeclaration, varname = varname, assignment = exprvalue } ;
+        }
+]]
+    print( x )
+    constDeclData = load( x )()
+    return constDeclData( buffer, index )
+    --[[return bind( check( tokenType.const ),     function ()            return
            bind( symbol,                       function ( varName )   return
            bind( check( tokenType.assign ),    function ()            return
            bind( expr,                         function ( exprValue ) return
            bind( check( tokenType.semicolon ), function ()            return
            unit( { type = astType.constDeclaration; varName = varName; assignment = exprValue } ) end ) end ) end ) end ) end )( buffer, index )
+           --]]
 end
 
 function varDeclaration( buffer, index )
@@ -184,8 +200,8 @@ function functionDefinition( buffer, index )
         params <- choice { functionDefinitionEmptyParameter, functionDefinitionParameters } ;
         |- doThis( function () print( "three" ) end ) ;
         |- check( tokenType.openCurly ) ;
-        |- doThis( function () print( "four" ) end ) ;
-        stms <- stm ; 
+        |- doThis( function () print( "four - 1" ) end ) ;
+        stms <- stmList ; 
         |- doThis( function () print( "five" ) end ) ;
         |- check( tokenType.closeCurly ) ;
         |- doThis( function () print( "six" ) end ) ;
@@ -195,18 +211,16 @@ function functionDefinition( buffer, index )
     return funcDefData( buffer, index )
 end
 
-local _expr = choice { literals
-                     , 
-                     }
 function expr( buffer, index )
-    return _expr( buffer, index )
+    return choice { literals
+                  , 
+                  }
 end
 
-local _stm = choice { constDefinition
-                    , varDefinition
-                    }
 function stm( buffer, index )
-    return _stm( buffer, index )
+    return choice { constDefinition
+                  , varDefinition
+                  }
 end
 
 function stmList( buffer, index )
@@ -219,8 +233,11 @@ function stmListTail( buffer, index )
     stmListTailData = stmdListTailData or load( doNotation [[
         do ( bind, mu )
         {
+            |- doThis( function() print( "stm 1" ) end ) ;
             state <- stm ;
+            |- doThis( function() print( "stm 2" ) end ) ;
             rest <- stmList ;
+            |- doThis( function() print( "stm 3" ) end ) ;
             unit insert( rest, 1, state ) ;
         }
 ]] )()
