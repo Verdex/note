@@ -3,6 +3,7 @@
 require "Token"
 require "ParserUtils"
 require "Utils"
+require "AST"
 
 -- parser function : ( buffer, index ) -> ( successful, buffer, index, value )
 -- parser function : ( buffer, index ) -> ( failure, index )
@@ -19,9 +20,42 @@ function symbol( buffer, index )
     return match( tokenType.symbol, function ( s ) return s.value end )( buffer, index )
 end
 
+function structFieldsTail( buffer, index )
+    return bind( check( tokenType.semicolon ), function ()     return
+           bind( symbol,                       function ( n )  return
+           bind( structFieldList,              function ( ns ) return
+           unit( insert( ns, 1, n ) ) end ) end ) end )( buffer, index )
+end
+
+function structFieldList( buffer, index )
+    return choice { structFieldsTail
+                  , map( nothing, function () return {} end )
+                  } ( buffer, index )
+end
+
+function structFieldsListHead( buffer, index )
+    return bind( symbol,          function ( first ) return
+           bind( structFieldList, function ( rest )  return
+           unit( insert( rest, 1, first ) ) end ) end )( buffer, index )
+end
+
+function structFields( buffer, index )
+     return choice { structFieldsListHead
+                   , map( nothing, function () return {} end )
+                   } ( buffer, index )
+end
+
+function struct( buffer, index )
+    return bind( symbol,                        function ( structType ) return
+           bind( check( tokenType.openCurly ),  function ()             return
+           bind( structFields,                  function ( fields )     return
+           bind( check( tokenType.closeCurly ), function ()             return
+           unit( { type = astType.struct ; name = structType ; fields = fields } ) end ) end ) end ) end )( buffer, index )
+end
+
 function expr( buffer, index )
     return choice { literals
                   , 
-                  }
+                  } ( buffer, index )
 end
 
