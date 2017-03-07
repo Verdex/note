@@ -26,20 +26,20 @@ grammar
     term name = 
         { 
             term inner =
-                stuff
+                stuff ;
             end
             term otherInner =
-                otherStuff
+                otherStuff ;
             end
         }
-        blah <- parser
-        otherBlah <- map( parser, x -> z )
-        check( struct_name )
-        ikky <- check( text )
-        blah <- choice( something, nothing )
-        debug ( message to the user )
-        endInput
-        return jab { ikky ; other }   // use variable as field name
+        blah <- parser ;
+        otherBlah <- map( parser, x -> z ) ;
+        check( struct_name ) ;
+        ikky <- check( text ) ;
+        blah <- choice( something, nothing ) ;
+        debug ( message to the user ) ;
+        endInput ;
+        return jab { ikky ; other } ;  // use variable as field name
     end
 
 end
