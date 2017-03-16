@@ -6,5 +6,6 @@ astType =
     struct = "struct",    
     debug = "debug",
     check = "check", 
+    endInput = "endInput",
 }
 

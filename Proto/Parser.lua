@@ -70,4 +70,9 @@ function debugP( buffer, index )
            unit( { type = astType.debug ; message = value } ) end ) end ) end ) end )( buffer, index )
 end
 
+function endInputP( buffer, index )
+    return bind( check( tokenType.endInput ), function () return
+           unit( { type = astType.endInput } ) end )( buffer, index )
+end
+
 
