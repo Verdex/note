@@ -54,10 +54,10 @@ function struct( buffer, index )
 end
 
 function checkP( buffer, index )
-    return bind( check( tokenType.check ), function () return
-           bind( check( tokenType.openParen ), function () return
-           bind( symbol, function ( structType ) return
-           bind( check( tokenType.closeParen ), function () return
+    return bind( check( tokenType.check ),      function ()             return
+           bind( check( tokenType.openParen ),  function ()             return
+           bind( symbol,                        function ( structType ) return
+           bind( check( tokenType.closeParen ), function ()             return
            unit( { type = astType.check ; structType = structType } ) end ) end ) end ) end )( buffer, index )
 end
 
