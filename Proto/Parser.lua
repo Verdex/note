@@ -53,7 +53,15 @@ function struct( buffer, index )
            unit( { type = astType.struct ; name = structType ; fields = fields } ) end ) end ) end ) end )( buffer, index )
 end
 
-function debugE( buffer, index )
+function checkP( buffer, index )
+    return bind( check( tokenType.check ), function () return
+           bind( check( tokenType.openParen ), function () return
+           bind( symbol, function ( structType ) return
+           bind( check( tokenType.closeParen ), function () return
+           unit( { type = astType.check ; structType = structType } ) end ) end ) end ) end )( buffer, index )
+end
+
+function debugP( buffer, index )
     return bind( check( tokenType.debug ),                       function ()        return
            bind( check( tokenType.openParen ),                   function ()        return
            bind( match( tokenType.string, 
