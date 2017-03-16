@@ -56,9 +56,13 @@ end
 
 
 function debugE( buffer, index )
-    return bind( check( tokenType.debug ), function () return
-           bind( check( tokenType.openParen ), function () return
-           bind(
+    return bind( check( tokenType.debug ),                       function ()        return
+           bind( check( tokenType.openParen ),                   function ()        return
+           bind( match( tokenType.string, 
+                            function ( s ) return s.value end ), function ( value ) return
+           bind( check( tokenType.closeParen ),                  function ()        return
+           unit( { type = astType.debug ; message = value } ) end ) end ) end ) end )( buffer, index )
+end
 
 function expr( buffer, index )
     return choice { literals
