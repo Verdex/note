@@ -75,4 +75,14 @@ function endInputP( buffer, index )
            unit( { type = astType.endInput } ) end )( buffer, index )
 end
 
+function nothingP( buffer, index )
+    return bind( check( tokenType.nothing ), function () return
+           unit( { type = astType.nothing } ) end )( buffer, index )
+end
+
+function emptyP( buffer, index )
+    return bind( check( tokenType.empty ), function () return
+           unit( { type = astType.empty } ) end )( buffer, index )
+end
+
 

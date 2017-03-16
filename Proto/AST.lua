@@ -7,5 +7,7 @@ astType =
     debug = "debug",
     check = "check", 
     endInput = "endInput",
+    nothing = "nothing",
+    empty = "empty",
 }
 
